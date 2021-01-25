@@ -15,6 +15,7 @@ function loadEventListeners(){
   form.addEventListener("submit", addTask);
   list.addEventListener("click", removeTask);
   clearBtn.addEventListener("click", clearAll);
+  filter.addEventListener("keydown", filterTasks);
 
 };
 
@@ -62,7 +63,20 @@ function removeTask(e) {
 
 function clearAll(e) {
 
-  document.querySelectorAll(".collection-item").forEach(function(task) {
-    task.remove();
-  })
+  while(list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+  
 }
+
+// Filter Tasks
+
+// function filterTasks(e) {
+//   const text = e.target.value.toLowerCase();
+
+//   if (list.firstChild.textContent.toLowerCase().contains(text)) {
+//     list.firstChild.style.display = "block";
+//   } else {
+//     list.firstChild.style.display = "none";
+//   }
+// }
