@@ -13,6 +13,8 @@ function loadEventListeners(){
 
   // Load all EventListeners
   form.addEventListener("submit", addTask);
+  list.addEventListener("click", removeTask);
+  clearBtn.addEventListener("click", clearAll);
 
 };
 
@@ -46,3 +48,21 @@ function addTask(e) {
   e.preventDefault();
 }
 
+// Remove Task 
+
+function removeTask(e) {
+  if(e.target.parentElement.classList.contains('delete-item')) {
+    if(confirm("Are you sure?")){
+      e.target.parentElement.parentElement.remove();
+    }
+  }
+}
+
+// Clear All Tasks
+
+function clearAll(e) {
+
+  document.querySelectorAll(".collection-item").forEach(function(task) {
+    task.remove();
+  })
+}
