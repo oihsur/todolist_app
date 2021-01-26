@@ -1,89 +1,63 @@
+// UI Variables
 const form = document.querySelector("#task-form");
-const list = document.querySelector(".collection");
-const clearBtn = document.querySelector(".clear-tasks");
+const taskInput = document.querySelector("#task");
+const taskList = document.querySelector(".collection");
 const filter = document.querySelector("#filter");
-const input = document.querySelector("#task");
+const clearBtn = document.querySelector(".clear-tasks");
 
+//Load all Event Listeners
+loadEventListeners();
 
-// Load all EventListeners
-loadEventListeners(); 
-
-
-function loadEventListeners(){
-
-  // Load all EventListeners
-  form.addEventListener("submit", addTask);
-  list.addEventListener("click", removeTask);
-  clearBtn.addEventListener("click", clearAll); 
-  filter.addEventListener("keyup", filterTasks);
-
+//All Events
+function loadEventListeners() {
+  form.addEventListener('submit', createTask);
+  taskList.addEventListener('click', deleteTask);
+  clearBtn.addEventListener('click', clearTasks);
+  filter.addEventListener('keyup', filterTasks);
 };
 
-// Add Task
-function addTask(e) {
-  if (input.value === '') {
-    alert("You need to add a task");
+//Create Task
+function createTask(e) {
+  if(taskInput.value === '') {
+    alert("You need to insert Task To DO.")
+  } else {
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    li.appendChild(document.createTextNode(taskInput.value));
+    const link = document.createElement("a");
+    link.className = 'delete-item secondary-content';
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+    li.appendChild(link);
+    taskList.appendChild(li);
+    taskInput.value = '';
   }
-
-  // Create item
-  const li = document.createElement("li");
-  li.className = "collection-item";
-  
-  //Move input inside li 
-  li.appendChild(document.createTextNode(input.value));
-  
-  //Create deleting button
-  const link = document.createElement("a");
-  link.className = "delete-item secondary-content";
-  link.innerHTML = '<i class="fa fa-remove"></i>';
-
-  //Append delete button to task
-  li.appendChild(link);
-
-  //Append task to list of tasks
-  list.appendChild(li);
-
-  //Clear value
-  input.value = '';
-  
   e.preventDefault();
 }
 
-// Remove Task 
-
-function removeTask(e) {
+// Delete Task
+function deleteTask(e) {
   if(e.target.parentElement.classList.contains('delete-item')) {
-    if(confirm("Are you sure?")){
-      e.target.parentElement.parentElement.remove();
-    }
+    e.target.parentElement.parentElement.remove();
   }
 }
 
-// Clear All Tasks
-
-function clearAll(e) {
-
-  while(list.firstChild) {
-    list.removeChild(list.firstChild);
+//Clear All Tasks
+function clearTasks(e) {
+  while(taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild);
   }
-  
+  e.preventDefault();
 }
 
-// Filter Tasks
-
+//Filter Tasks
 function filterTasks(e) {
-
   const text = e.target.value.toLowerCase();
-
   document.querySelectorAll('.collection-item').forEach(function(task) {
-
-    const item = task.firstChild.textContent;
-
-    if (item.toLowerCase().indexOf(text) != -1) {
-      task.style.display = 'block';
+    const item = task.textContent.toLowerCase();
+    if(item.indexOf(text) !== -1) {
+      task.style.display = 'block'
     } else {
       task.style.display = 'none';
     }
-    
-  });
+  })
 }
